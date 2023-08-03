@@ -1,4 +1,4 @@
--- Giovanni De Franceschi
+-- Giovanni De Franceschi TP003
 
 /*
 Aggregate Queries
@@ -10,7 +10,8 @@ REQUIREMENT - Use a multi-line comment to paste the first 5 or fewer results und
 USE orderbook_activity_db;
 
 -- #1: How many users do we have?
-SELECT COUNT(userId) FROM User;
+SELECT COUNT(userId) AS `Number of users` FROM User;
+
 /*
 7
 ROWS = 1
@@ -32,7 +33,7 @@ ROWS = 5;
 */
 
 
--- #3: List the username, symbol, and number of orders placed for each user and for each symbol. 
+-- #3: List the username, symbol, and number of orders placed for each user and for each symbol. (????)
 -- Sort results in alphabetical order by symbol.
 
 SELECT u.uname, o.symbol, COUNT(*) AS `Order_Count`
@@ -40,13 +41,13 @@ FROM `Order` AS o
 JOIN `User` AS u ON o.userId = u.userId
 GROUP BY u.uname, o.symbol
 ORDER BY o.symbol ASC;
+
 /*
+TO BE VERIFIED ?????????
 
-TO BE VERIFIED
-
-alice	A	5
-james	A	1
-robert	AAA	1
+alice	A		5
+james	A		1
+robert	AAA		1
 admin	AAPL	1
 robert	AAPL	1
 ROWS = 19
@@ -65,11 +66,11 @@ GROUP BY u.uname, o.symbol
 ORDER BY o.symbol ASC;
 
 /*
-alice	A	5	5
+alice	A		5	5
 admin	AAPL	1	1
 alice	GOOG	1	1
-admin	GS	1	1
-alice	SPY	1	1
+admin	GS		1	1
+alice	SPY		1	1
 ROWS =7
 */
 
@@ -138,6 +139,7 @@ ON o.orderId = f.orderId
 GROUP BY o.symbol, f.share, f.price
 HAVING NOT o.symbol = 'WLY' AND net_fill >100
 ORDER BY net_fill DESC;
+
 /*
 SPY		27429.75
 SPY		27429.75
@@ -148,7 +150,7 @@ ROWS =  12
 */
 
 
--- #9: List the top five users with the greatest amount of outstanding orders.
+-- #9: List the top five users with the greatest amount of outstanding orders.             (????????)
 -- Display the absolute amount filled, absolute amount ordered, and net outstanding.
 -- Sort the results by the net outstanding amount with the largest value at the top.
 

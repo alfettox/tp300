@@ -5,11 +5,24 @@ USE PersonalTrainer;
 -- This query returns all Exercises and their associated ExerciseCategory.
 -- 64 rows
 --------------------
+
+SELECT *
+FROM ExerciseCategory AS C
+JOIN Exercise AS E ON C.ExerciseCategoryId = E.ExerciseCategoryId;
+
     
 -- Select ExerciseCategory.Name and Exercise.Name
 -- where the ExerciseCategory does not have a ParentCategoryId (it is null).
 -- Again, join the tables on their shared key (ExerciseCategoryId).
 -- 9 rows
+
+SELECT C.Name AS ExerciseCategoryName, E.Name AS ExerciseName
+FROM ExerciseCategory AS C
+JOIN Exercise AS E ON C.ExerciseCategoryId = E.ExerciseCategoryId
+WHERE C.ParentCategoryId IS NULL;
+
+
+
 --------------------
 
 -- The query above is a little confusing. At first glance, it's hard to tell
@@ -18,7 +31,16 @@ USE PersonalTrainer;
 -- Alias ExerciseCategory.Name as 'CategoryName'.
 -- Alias Exercise.Name as 'ExerciseName'.
 -- 9 rows
+
+SELECT EC.Name AS CategoryName, E.Name AS ExerciseName
+FROM ExerciseCategory AS EC
+JOIN Exercise AS E ON EC.ExerciseCategoryId = E.ExerciseCategoryId
+WHERE EC.ParentCategoryId IS NULL;
+
+
+
 --------------------
+
 
 -- Select FirstName, LastName, and BirthDate from Client
 -- and EmailAddress from Login 
@@ -26,12 +48,24 @@ USE PersonalTrainer;
 -- Join the tables by their key relationship. 
 -- What is the primary-foreign key relationship?
 -- 35 rows
+
+SELECT C.FirstName, C.LastName, C.BirthDate, L.EmailAddress
+FROM Client AS C
+JOIN Login AS L ON C.ClientId = L.ClientId
+WHERE C.BirthDate BETWEEN '1990-01-01' AND '1999-12-31';
+
 --------------------
 
 -- Select Workout.Name, Client.FirstName, and Client.LastName
 -- for Clients with LastNames starting with 'C'?
 -- How are Clients and Workouts related?
 -- 25 rows
+
+SELECT W.Name AS WorkoutName, C.FirstName, C.LastName
+FROM Client AS C
+JOIN Workout AS W ON C.ClientId = W.ClientId
+WHERE C.LastName LIKE 'C%';
+
 --------------------
 
 -- Select Names from Workouts and their Goals.

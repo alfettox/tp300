@@ -1,6 +1,5 @@
 -- INSERT QUERIES
 
-USE MovieCatalogue;
 
 INSERT INTO Actor (ActorID, FirstName, LastName, BirthDate)
 VALUES (1, 'Bill', 'Murray', '1950/9/21'),

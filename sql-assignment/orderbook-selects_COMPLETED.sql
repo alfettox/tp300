@@ -9,7 +9,7 @@ REQUIREMENT - Use a multi-line comment to paste the first 5 or fewer results und
 USE orderbook_activity_db;
 
 -- #1: List all users, including username and dateJoined.
-SELECT uname, dateJoined
+SELECT uname AS `User`, dateJoined AS `Date joined`
 FROM User;
 /*
 'admin', '2023-02-14 13:13:28'
@@ -58,17 +58,15 @@ ROWS=3
 -- #5: List all the orders.
 SELECT * FROM `Order`;
 /*
-1	1	WLY	1	2023-03-15 19:20:35	100	38.73	partial_fill
-2	6	WLY	2	2023-03-15 19:20:50	-10	38.73	filled
+1	1	WLY		1	2023-03-15 19:20:35	100	38.73	partial_fill
+2	6	WLY		2	2023-03-15 19:20:50	-10	38.73	filled
 3	6	NFLX	2	2023-03-15 19:21:12	-100	243.15	pending
-4	5	A	1	2023-03-15 19:21:31	10	129.89	filled
-5	3	A	2	2023-03-15 19:21:39	-10	129.89	filled
+4	5	A		1	2023-03-15 19:21:31	10	129.89	filled
+5	3	A		2	2023-03-15 19:21:39	-10	129.89	filled
 ROWS=24
 */
 
--- #6: List all orders in March where the absolute net order amount is greater than 1000.
-SELECT * FROM orderbook_activity_db.Order;
-
+-- #6: List all orders in March where the absolute net order amount is greater than 1000. (ABSOLUTE NET ORDER = SUM shares * price)
 SELECT symbol,
 	SUM(shares) AS total_shares,
 	SUM(shares * price) AS total_amount
@@ -126,7 +124,7 @@ ROWS=10
 */
 
 
--- #10: Display orderid, fillid, userid, symbol, and absolute net fill amount
+-- #10: Display orderid, fillid, userid, symbol, and absolute net fill amount (ABSOLUTE NET FILL AMOUNT = only filled ABS(SUM shares * price))
 -- from fills where the absolute net fill is greater than $1000.
 -- Sort the results with the largest absolute net fill at the top.
 
