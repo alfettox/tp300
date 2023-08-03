@@ -17,7 +17,7 @@ WHERE uname = 'admin';
  */
  
  
--- #2: Display each absolute order net (share*price), status, symbol, trade data, and username. (TRADE DATA = ??? )
+-- #2: Display each absolute order net (share*price), status, symbol, trade data, and username. 
 -- Sort the results with largest the absolute order net (share*price) at the top.
 -- Include only orders that were not canceled or partially canceled.
 SELECT ABS(shares*price) AS net_order, status, symbol, orderid, userid, side, orderTime
@@ -30,7 +30,7 @@ ORDER BY net_order DESC;
 26827.00	pending	QQQ		13	4	2	2023-03-15 19:24:32
 26827.00	pending	QQQ		12	4	2	2023-03-15 19:24:32
 24315.00	pending	NFLX	3	6	2	2023-03-15 19:21:12
-3873.00	pending	WLY	20		3	1	2023-03-15 19:51:06
+3873.00	pending	WLY			20	3	1		2023-03-15 19:51:06
 18 ROWS RETURNED
 */
 
@@ -40,10 +40,10 @@ SELECT o.orderid, o.symbol, o.status, o.shares AS `Order shares`, o.price, f.ord
 FROM `Order` AS o
 JOIN `Fill` AS f ON f.orderid = o.orderid;
 /*
-2	WLY	filled		-10	38.73
-4	A	filled		10	129.89
-5	A	filled		-10	129.89
-7	GS	filled		-10	305.63
+2	WLY		filled		-10	38.73
+4	A		filled		10	129.89
+5	A		filled		-10	129.89
+7	GS		filled		-10	305.63
 8	AAPL	filled	25	140.76
 14 ROWS RETURNED
 */
@@ -60,7 +60,7 @@ WHERE status = "partial_fill";
 2 rows returned
 */
 
--- #5: Display the orderid, symbol, status, order shares, filled shares, and price for orders with fills. (ADD SUM ???? OR ABS ???)
+-- #5: Display the orderid, symbol, status, order shares, filled shares, and price for orders with fills.
 -- Also include the username, role, absolute net filled, and absolute net order.
 -- Sort by the absolute net order with the largest value at the top.
 SELECT o.orderid, o.symbol, o.status, o.shares, f.share, f.price, ABS(o.shares*o.price)
@@ -135,4 +135,5 @@ GROUP BY o.orderid, u.uname, r.name;
 /*
 WLY	admin	admin	100
 WLY	james	user	100
+ROWS = 2
 */

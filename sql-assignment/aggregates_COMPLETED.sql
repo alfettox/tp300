@@ -33,7 +33,7 @@ ROWS = 5;
 */
 
 
--- #3: List the username, symbol, and number of orders placed for each user and for each symbol. (????)
+-- #3: List the username, symbol, and number of orders placed for each user and for each symbol.
 -- Sort results in alphabetical order by symbol.
 
 SELECT u.uname, o.symbol, COUNT(*) AS `Order_Count`
@@ -43,8 +43,6 @@ GROUP BY u.uname, o.symbol
 ORDER BY o.symbol ASC;
 
 /*
-TO BE VERIFIED ?????????
-
 alice	A		5
 james	A		1
 robert	AAA		1
@@ -98,20 +96,21 @@ ROWS = 5
 -- #6: How many shares for each symbol does each user have?
 -- Display the username and symbol with number of shares.
 
-SELECT u.uname, o.symbol, SUM(o.shares) AS number_shares
+SELECT
+u.uname,
+f.symbol,
+SUM(f.`share`)
 FROM `User` AS u
-JOIN `Order` AS o
-ON o.userId = u.userId
-RIGHT JOIN `Fill` AS f
-ON f.userId = o.userId
-GROUP BY u.uname, o.symbol;
+INNER JOIN
+`Fill` AS f ON u.userId = f.userId
+GROUP BY u.uname, f.symbol;
 /*
-admin	WLY	    300
-admin	GS	    300
-admin	AAPL	-45
-james	A	    -20
-james	TLT	     20
-ROWS = 19
+admin	WLY		-10
+admin	GS		-10
+admin	AAPL	15
+alice	A		-10
+alice	SPY		-75
+ROWS = 13
 */
 
 
@@ -154,10 +153,33 @@ ROWS =  12
 -- Display the absolute amount filled, absolute amount ordered, and net outstanding.
 -- Sort the results by the net outstanding amount with the largest value at the top.
 
+SELECT 
+ uname,
+  SUM( ABS(f.`share` * f.price) ) AS abs_amt_filled,
+   SUM( ABS(o.shares*o.price )) AS abs_amt_orders,
+   SUM( o.shares + f.`share` ) AS net_outstanding
+   FROM
+    (SELECT
+     u.userid, u.uname
+     FROM
+     `User` AS u
+	JOIN `Order` AS o ON u.userid = o.userid
+    LEFT JOIN Fill AS f ON o.orderid = f.orderid
+	WHERE
+    o.status IN ('pending' , 'partial_fill')
+    GROUP BY o.userid
+    ORDER BY o.userid
+    LIMIT 5) AS top5
+    JOIN `Order` as o ON top5.userid = o.userid
+    LEFT JOIN Fill as f ON o.orderid = f.orderid
+    GROUP BY top5.userid
+    ORDER BY net_outstanding DESC;
+    
 /*
-SELECT u.uname, o.status, o.orderId, 
-FROM `User` AS u
-JOIN `Order` AS o
-ON u.userId = o.userId
+admin	5555.00		36547.40	180
+alice	29717.95	50242.10	25
+robert	3906.30		55608.20	25
+james	2288.20		6161.20		0
+kendra	31893.65	85547.65	0
+ROWS = 5
 */
-
